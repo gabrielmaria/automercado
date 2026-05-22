@@ -49,7 +49,7 @@ public class Produto {
     private Inventario inventario;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<QuantidadeEncomendas> quantidadeEncomendas = new ArrayList<>();
 
     public List<QuantidadeEncomendas> getQuantidadeEncomendas() {

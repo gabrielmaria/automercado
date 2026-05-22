@@ -6,7 +6,6 @@ import com.loja.sd.loja_backend.modelos.Produto;
 import com.loja.sd.loja_backend.repositorio.CategoriaRepositorio;
 import com.loja.sd.loja_backend.repositorio.InventarioRepositorio;
 import com.loja.sd.loja_backend.repositorio.ProdutoRepositorio;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -128,13 +127,8 @@ public class CatalogoController {
 
     @DeleteMapping("/produtos/{id}")
     public void apagarProduto(@PathVariable Long id) {
-        Produto produto = buscarProduto(id);
-        try {
-            produtoRepositorio.delete(produto);
-            produtoRepositorio.flush();
-        } catch (DataIntegrityViolationException error) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Produto com historico de vendas nao pode ser apagado");
-        }
+        produtoRepositorio.delete(buscarProduto(id));
+        produtoRepositorio.flush();
     }
 
     private void preencherProduto(Produto produto, ProdutoPedido pedido) {
