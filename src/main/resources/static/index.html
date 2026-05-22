@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AutoMercado</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/" aria-label="AutoMercado">
+            <span class="brand-mark">AM</span>
+            <span>AutoMercado</span>
+        </a>
+        <nav class="nav-tabs" aria-label="Secções">
+            <button class="tab is-active" type="button" data-section="catalogo">Catálogo</button>
+            <button class="tab" type="button" data-section="conta">Conta</button>
+            <button class="tab" type="button" data-section="carrinho">Carrinho <span id="cartCount" class="pill">0</span></button>
+            <button class="tab hidden" type="button" data-section="gestao" data-admin-only>Gestão</button>
+            <button class="tab hidden" type="button" data-section="estatisticas" data-admin-only>Estatísticas</button>
+        </nav>
+    </header>
+
+    <main class="page">
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+        <section id="catalogo" class="view is-active" aria-labelledby="catalogoTitulo">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Produtos</p>
+                    <h1 id="catalogoTitulo">Catálogo</h1>
+                </div>
+                <div id="userBadge" class="user-badge">Sessão não iniciada</div>
+            </div>
+
+            <form id="catalogFilters" class="toolbar">
+                <label>
+                    <span>Pesquisar</span>
+                    <input id="searchInput" type="search" placeholder="Nome, marca ou modelo">
+                </label>
+                <label>
+                    <span>Categoria</span>
+                    <select id="categoryFilter">
+                        <option value="">Todas</option>
+                    </select>
+                </label>
+                <button class="secondary" type="button" id="refreshCatalog">Atualizar</button>
+            </form>
+
+            <div id="productsGrid" class="product-grid"></div>
+        </section>
+
+        <section id="conta" class="view" aria-labelledby="contaTitulo">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Cliente</p>
+                    <h1 id="contaTitulo">Conta</h1>
+                </div>
+                <button id="logoutButton" class="danger hidden" type="button">Sair</button>
+            </div>
+
+            <div id="authArea" class="two-columns">
+                <form id="loginForm" class="tool-pane">
+                    <h2>Entrar</h2>
+                    <label>
+                        <span>Utilizador</span>
+                        <input name="utilizador" autocomplete="username" required>
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input name="password" type="password" autocomplete="current-password" required>
+                    </label>
+                    <button type="submit">Entrar</button>
+                </form>
+
+                <form id="registerForm" class="tool-pane">
+                    <h2>Registar</h2>
+                    <div class="form-grid">
+                        <label>
+                            <span>Utilizador</span>
+                            <input name="utilizador" autocomplete="username" required>
+                        </label>
+                        <label>
+                            <span>Email</span>
+                            <input name="email" type="email" autocomplete="email" required>
+                        </label>
+                        <label>
+                            <span>Nome</span>
+                            <input name="nome" autocomplete="given-name" required>
+                        </label>
+                        <label>
+                            <span>Sobrenome</span>
+                            <input name="sobrenome" autocomplete="family-name" required>
+                        </label>
+                        <label class="wide">
+                            <span>Password</span>
+                            <input name="password" type="password" autocomplete="new-password" required>
+                        </label>
+                    </div>
+                    <button type="submit">Criar conta</button>
+                </form>
+            </div>
+
+            <div id="profileArea" class="hidden">
+                <div class="two-columns">
+                    <form id="profileForm" class="tool-pane">
+                        <h2>Perfil</h2>
+                        <div class="form-grid">
+                            <label>
+                                <span>Email</span>
+                                <input name="email" type="email" required>
+                            </label>
+                            <label>
+                                <span>Nome</span>
+                                <input name="nome" required>
+                            </label>
+                            <label>
+                                <span>Sobrenome</span>
+                                <input name="sobrenome" required>
+                            </label>
+                        </div>
+                        <button type="submit">Guardar perfil</button>
+                    </form>
+
+                    <form id="addressForm" class="tool-pane">
+                        <h2>Endereço</h2>
+                        <label>
+                            <span>Endereço 1</span>
+                            <input name="endereco1" required>
+                        </label>
+                        <label>
+                            <span>Endereço 2</span>
+                            <input name="endereco2">
+                        </label>
+                        <div class="form-grid">
+                            <label>
+                                <span>Cidade</span>
+                                <input name="cidade" required>
+                            </label>
+                            <label>
+                                <span>País</span>
+                                <input name="pais" required>
+                            </label>
+                        </div>
+                        <button type="submit">Adicionar endereço</button>
+                    </form>
+                </div>
+
+                <div class="data-block">
+                    <h2>Endereços</h2>
+                    <div id="addressesList" class="list-stack"></div>
+                </div>
+
+                <div class="data-block">
+                    <h2>Vendas</h2>
+                    <div id="salesList" class="table-wrap"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="carrinho" class="view" aria-labelledby="carrinhoTitulo">
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Compra</p>
+                    <h1 id="carrinhoTitulo">Carrinho</h1>
+                </div>
+            </div>
+
+            <div class="two-columns cart-layout">
+                <div class="tool-pane">
+                    <h2>Itens</h2>
+                    <div id="cartItems" class="list-stack"></div>
+                    <div class="cart-total">
+                        <span>Total</span>
+                        <strong id="cartTotal">0,00 €</strong>
+                    </div>
+                </div>
+
+                <div class="tool-pane">
+                    <h2>Finalizar</h2>
+                    <label>
+                        <span>Endereço</span>
+                        <select id="checkoutAddress"></select>
+                    </label>
+                    <button id="checkoutButton" type="button">Comprar</button>
+                    <div id="invoiceBox" class="invoice"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gestao" class="view" aria-labelledby="gestaoTitulo" data-admin-only>
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Backoffice</p>
+                    <h1 id="gestaoTitulo">Gestão</h1>
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <form id="categoryForm" class="tool-pane">
+                    <h2>Categoria</h2>
+                    <label>
+                        <span>Nome</span>
+                        <input name="nome" required>
+                    </label>
+                    <label>
+                        <span>Descrição</span>
+                        <textarea name="descricao" rows="4"></textarea>
+                    </label>
+                    <button type="submit">Criar categoria</button>
+                </form>
+
+                <form id="productForm" class="tool-pane">
+                    <h2>Produto</h2>
+                    <input name="id" type="hidden">
+                    <div class="form-grid">
+                        <label>
+                            <span>Nome</span>
+                            <input name="nome" required>
+                        </label>
+                        <label>
+                            <span>Categoria</span>
+                            <select name="categoriaId" required></select>
+                        </label>
+                        <label>
+                            <span>Marca</span>
+                            <input name="marca" required>
+                        </label>
+                        <label>
+                            <span>Modelo</span>
+                            <input name="modelo" required>
+                        </label>
+                        <label>
+                            <span>Preço</span>
+                            <input name="preco" type="number" min="0" step="0.01" required>
+                        </label>
+                        <label>
+                            <span>Stock</span>
+                            <input name="stock" type="number" min="0" step="1" required>
+                        </label>
+                        <label>
+                            <span>Ano</span>
+                            <input name="ano" type="number" min="1900" step="1">
+                        </label>
+                        <label>
+                            <span>Quilometragem</span>
+                            <input name="quilometragem" type="number" min="0" step="1">
+                        </label>
+                        <label class="wide">
+                            <span>Cilindrada/Potência</span>
+                            <input name="cilindradaPotencia">
+                        </label>
+                        <label class="wide">
+                            <span>Resumo</span>
+                            <input name="resumodescricao" required>
+                        </label>
+                        <label class="wide">
+                            <span>Descrição</span>
+                            <textarea name="descricao" rows="4"></textarea>
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Criar produto</button>
+                        <button type="button" class="secondary hidden" id="cancelProductEdit">Cancelar edição</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tool-pane">
+                <div class="panel-head">
+                    <h2>Produtos à venda</h2>
+                    <span id="productFormStatus" class="tag hidden"></span>
+                </div>
+                <div id="adminProductsList" class="list-stack"></div>
+            </div>
+        </section>
+
+        <section id="estatisticas" class="view" aria-labelledby="estatisticasTitulo" data-admin-only>
+            <div class="section-head">
+                <div>
+                    <p class="eyebrow">Relatórios</p>
+                    <h1 id="estatisticasTitulo">Estatísticas</h1>
+                </div>
+                <form id="statsControls" class="inline-controls">
+                    <label>
+                        <span>Período</span>
+                        <select id="periodSelect">
+                            <option value="dia">Dia</option>
+                            <option value="semana">Semana</option>
+                            <option value="mes">Mês</option>
+                        </select>
+                    </label>
+                    <button class="secondary" type="button" id="refreshStats">Atualizar</button>
+                </form>
+            </div>
+
+            <div class="stats-grid">
+                <div class="metric">
+                    <span>Faturação</span>
+                    <strong id="revenueValue">0,00 €</strong>
+                </div>
+                <div class="data-block">
+                    <h2>Mais vendidos</h2>
+                    <div id="topProducts" class="table-wrap"></div>
+                </div>
+                <div class="data-block">
+                    <h2>Menos vendidos</h2>
+                    <div id="lowProducts" class="table-wrap"></div>
+                </div>
+                <div class="data-block">
+                    <h2>Melhores clientes</h2>
+                    <div id="bestClients" class="table-wrap"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/app.js" defer></script>
+</body>
+</html>

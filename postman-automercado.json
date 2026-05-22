@@ -1,0 +1,761 @@
+{
+  "info": {
+    "name": "AutoMercado - Testes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "categoriaId",
+      "value": "1"
+    },
+    {
+      "key": "produtoId",
+      "value": "1"
+    },
+    {
+      "key": "produtoId2",
+      "value": "2"
+    },
+    {
+      "key": "enderecoId",
+      "value": "1"
+    },
+    {
+      "key": "vendaId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1 - Autenticacao",
+      "item": [
+        {
+          "name": "Registar cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"utilizador\": \"tiago\",\n  \"password\": \"123456\",\n  \"email\": \"tiago@example.com\",\n  \"nome\": \"Tiago\",\n  \"sobrenome\": \"Almeida\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/autenticacao/registar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autenticacao",
+                "registar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"utilizador\": \"tiago\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/autenticacao/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autenticacao",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 - Cliente",
+      "item": [
+        {
+          "name": "Ver perfil",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clientes/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "perfil"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar perfil",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"tiago@example.com\",\n  \"nome\": \"Tiago\",\n  \"sobrenome\": \"Almeida\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clientes/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "perfil"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar endereco",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = pm.response.json();",
+                  "if (json.id) {",
+                  "    pm.collectionVariables.set('enderecoId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"endereco1\": \"Rua das Oficinas, 25\",\n  \"endereco2\": \"Garagem B\",\n  \"cidade\": \"Lisboa\",\n  \"pais\": \"Portugal\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clientes/enderecos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "enderecos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar enderecos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clientes/enderecos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "enderecos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar endereco",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"endereco1\": \"Rua das Oficinas, 25\",\n  \"endereco2\": \"Portao 2\",\n  \"cidade\": \"Lisboa\",\n  \"pais\": \"Portugal\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clientes/enderecos/{{enderecoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "enderecos",
+                "{{enderecoId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 - Catalogo",
+      "item": [
+        {
+          "name": "Criar categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = pm.response.json();",
+                  "if (json.id) {",
+                  "    pm.collectionVariables.set('categoriaId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Motociclos {{$timestamp}}-{{$randomInt}}\",\n  \"descricao\": \"Motas novas e usadas\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar categorias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar categoria por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoriaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar categoria",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Motociclos atualizado {{$timestamp}}-{{$randomInt}}\",\n  \"descricao\": \"Motociclos de estrada, trail e scooters\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoriaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar produto 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = pm.response.json();",
+                  "if (json.id) {",
+                  "    pm.collectionVariables.set('produtoId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Yamaha MT-07 2023 {{$timestamp}}-{{$randomInt}}\",\n  \"resumodescricao\": \"Naked 689cc em excelente estado\",\n  \"descricao\": \"Yamaha MT-07 com revisao feita, pneus novos e garantia.\",\n  \"preco\": 7490.0,\n  \"marca\": \"Yamaha\",\n  \"modelo\": \"MT-07\",\n  \"cilindradaPotencia\": \"689cc / 73cv\",\n  \"ano\": 2023,\n  \"quilometragem\": 8500,\n  \"stock\": 5,\n  \"categoriaId\": {{categoriaId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar produto 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = pm.response.json();",
+                  "if (json.id) {",
+                  "    pm.collectionVariables.set('produtoId2', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Honda PCX 125 2022 {{$timestamp}}-{{$randomInt}}\",\n  \"resumodescricao\": \"Scooter economica para cidade\",\n  \"descricao\": \"Honda PCX 125 com baixo consumo e arranque eletrico.\",\n  \"preco\": 2990.0,\n  \"marca\": \"Honda\",\n  \"modelo\": \"PCX 125\",\n  \"cilindradaPotencia\": \"125cc / 12cv\",\n  \"ano\": 2022,\n  \"quilometragem\": 12000,\n  \"stock\": 3,\n  \"categoriaId\": {{categoriaId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar produtos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar produto por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/{{produtoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "{{produtoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar produto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Yamaha MT-07 revista {{$timestamp}}-{{$randomInt}}\",\n  \"resumodescricao\": \"Naked 689cc revista\",\n  \"descricao\": \"Yamaha MT-07 com revisao feita, pneus novos, garantia e top case incluido.\",\n  \"preco\": 7290.0,\n  \"marca\": \"Yamaha\",\n  \"modelo\": \"MT-07\",\n  \"cilindradaPotencia\": \"689cc / 73cv\",\n  \"ano\": 2023,\n  \"quilometragem\": 8500,\n  \"stock\": 5,\n  \"categoriaId\": {{categoriaId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/produtos/{{produtoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "{{produtoId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 - Vendas",
+      "item": [
+        {
+          "name": "Comprar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = pm.response.json();",
+                  "if (json.encomendaId) {",
+                  "    pm.collectionVariables.set('vendaId', json.encomendaId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enderecoId\": {{enderecoId}},\n  \"itens\": [\n    {\n      \"produtoId\": {{produtoId}},\n      \"quantidade\": 1\n    },\n    {\n      \"produtoId\": {{produtoId2}},\n      \"quantidade\": 1\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vendas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar vendas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ver fatura",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendas/{{vendaId}}/fatura",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendas",
+                "{{vendaId}}",
+                "fatura"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 - Estatisticas",
+      "item": [
+        {
+          "name": "Produtos mais vendidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas/produtos/mais-vendidos?limite=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas",
+                "produtos",
+                "mais-vendidos"
+              ],
+              "query": [
+                {
+                  "key": "limite",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Produtos menos vendidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas/produtos/menos-vendidos?limite=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas",
+                "produtos",
+                "menos-vendidos"
+              ],
+              "query": [
+                {
+                  "key": "limite",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Melhores clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas/clientes/melhores?limite=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas",
+                "clientes",
+                "melhores"
+              ],
+              "query": [
+                {
+                  "key": "limite",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Faturacao dia",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas/faturacao?periodo=dia",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas",
+                "faturacao"
+              ],
+              "query": [
+                {
+                  "key": "periodo",
+                  "value": "dia"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Faturacao semana",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas/faturacao?periodo=semana",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas",
+                "faturacao"
+              ],
+              "query": [
+                {
+                  "key": "periodo",
+                  "value": "semana"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Faturacao mes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/estatisticas/faturacao?periodo=mes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estatisticas",
+                "faturacao"
+              ],
+              "query": [
+                {
+                  "key": "periodo",
+                  "value": "mes"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6 - Apagar no fim",
+      "item": [
+        {
+          "name": "Apagar produto 1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/{{produtoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "{{produtoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apagar produto 2",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/produtos/{{produtoId2}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos",
+                "{{produtoId2}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apagar categoria",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{categoriaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoriaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apagar endereco",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clientes/enderecos/{{enderecoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes",
+                "enderecos",
+                "{{enderecoId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

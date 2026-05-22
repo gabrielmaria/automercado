@@ -1,0 +1,120 @@
+\documentclass[10pt,a4paper]{report}
+
+\usepackage[portuguese]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+\fancyhead[RE]{\bfseries\leftmark}
+\renewcommand{\headrulewidth}{0.5pt}
+\setlength{\headheight}{15.6pt}
+
+\begin{document}
+
+\thispagestyle{empty}
+\setcounter{page}{-1}
+
+\begin{center}
+\begin{Huge}
+\textbf{Universidade da Beira Interior}
+\end{Huge}
+\end{center}
+
+\begin{center}
+\begin{Huge}
+Departamento de Informática
+\end{Huge}
+\end{center}
+
+\vspace{0.1cm}
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=191pt]{ubi-fe-di.png}
+\end{figure}
+
+\vspace{0.4cm}
+\begin{center}
+\begin{Large}
+\textbf{\emph{AutoMercado - Sistemas Distribuídos}}\\
+\textbf{Licenciatura em Engenharia Informática}
+\end{Large}
+\end{center}
+
+\vspace{0.4cm}
+\begin{center}
+\textbf{Gabriel Maria n.º 47922}\\
+\textbf{Tiago Almeida n.º 48278}
+\end{center}
+
+\vspace{0.4cm}
+\begin{center}
+\today
+\end{center}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\chapter{Introdução}
+
+Este relatório descreve o projeto \textit{AutoMercado}, desenvolvido no âmbito da unidade curricular de Sistemas Distribuídos. A aplicação consiste num backend para uma plataforma de compra e venda de veículos, permitindo gerir utilizadores, produtos, categorias, endereços e encomendas.
+
+A solução foi implementada em Java com Spring Boot e disponibiliza uma API REST, bem como uma interface Web simples para demonstração do funcionamento do sistema.
+
+\chapter{Modelo de dados}
+
+O modelo de dados da aplicação é composto pelas entidades principais:
+\begin{itemize}
+    \item \texttt{UtilizadorLocal}, que representa os utilizadores do sistema;
+    \item \texttt{Endereco}, associado aos utilizadores;
+    \item \texttt{Categoria}, usada para organizar os produtos;
+    \item \texttt{Produto}, que representa os veículos ou artigos disponíveis;
+    \item \texttt{Inventario}, responsável pelo controlo de stock;
+    \item \texttt{Encomenda}, que regista as compras efetuadas;
+    \item \texttt{QuantidadeEncomendas}, que representa os itens de cada encomenda.
+\end{itemize}
+
+As relações principais permitem associar vários endereços a um utilizador, vários produtos a uma categoria e vários itens a uma encomenda. Desta forma, o modelo suporta o fluxo completo de compra e gestão de catálogo.
+
+\chapter{Descrição da arquitetura e das funcionalidades da aplicação}
+
+A aplicação segue uma arquitetura em camadas, composta por controladores REST, serviços, repositórios JPA e base de dados relacional. Esta organização permite separar a lógica de negócio, o acesso a dados e a exposição dos endpoints.
+
+Entre as principais funcionalidades implementadas destacam-se:
+\begin{itemize}
+    \item registo e autenticação de utilizadores;
+    \item consulta de categorias e produtos;
+    \item gestão de perfil e endereços;
+    \item criação de encomendas com atualização de stock;
+    \item consulta do histórico de compras;
+    \item gestão de produtos e categorias por administradores;
+    \item consulta de estatísticas de vendas.
+\end{itemize}
+
+\chapter{Descrição das opções adotadas para gestão de sessões e segurança}
+
+A autenticação foi implementada com Spring Security. As palavras-passe são armazenadas com \texttt{BCrypt}, garantindo maior segurança no armazenamento das credenciais.
+
+A aplicação utiliza sessões HTTP para manter o estado autenticado do utilizador entre pedidos. A autorização é feita com base em papéis, distinguindo utilizadores do tipo cliente e administrador.
+
+Os endpoints públicos incluem login, registo e consulta de catálogo. Já as operações de perfil, compras e gestão de endereços exigem autenticação, enquanto as operações administrativas e estatísticas exigem permissões de administrador.
+
+\chapter{Demonstração}
+
+A demonstração da aplicação pode ser feita através de uma sequência simples de utilização. Primeiro, o utilizador consulta o catálogo sem autenticação. Em seguida, pode criar conta, iniciar sessão, adicionar um endereço e realizar uma compra.
+
+Após a compra, é possível consultar o histórico e a fatura gerada. No caso de um utilizador administrador, ficam também disponíveis funcionalidades de gestão de produtos e categorias, bem como estatísticas de faturação e vendas.
+
+Esta demonstração permite verificar o funcionamento global do sistema, incluindo autenticação, controlo de acessos, persistência de dados e atualização de stock.
+
+\chapter{Conclusão}
+
+O projeto \textit{AutoMercado} permitiu desenvolver uma aplicação funcional de comércio eletrónico orientada ao domínio automóvel, integrando persistência de dados, autenticação, controlo de acessos e gestão de encomendas.
+
+A solução cumpre os objetivos principais do trabalho e demonstra a aplicação prática de conceitos de Sistemas Distribuídos com recurso a tecnologias como Spring Boot, Spring Data JPA e Spring Security.
+
+\end{document}
