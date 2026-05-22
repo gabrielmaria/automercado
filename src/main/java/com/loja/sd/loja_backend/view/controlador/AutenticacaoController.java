@@ -2,7 +2,7 @@ package com.loja.sd.loja_backend.view.controlador;
 
 import com.loja.sd.loja_backend.modelos.UtilizadorLocal;
 import com.loja.sd.loja_backend.servico.UtilizadorServico;
-import com.loja.sd.loja_backend.view.modelos.Registro;
+import com.loja.sd.loja_backend.view.modelos.Registo;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,8 +28,8 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/registar")
-    public UtilizadorLocal registar(@RequestBody Registro registro) {
-        return utilizadorServico.registrar(registro);
+    public UtilizadorLocal registar(@RequestBody Registo registo) {
+        return utilizadorServico.registrar(registo);
     }
 
     @PostMapping("/login")

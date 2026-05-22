@@ -3,7 +3,7 @@ package com.loja.sd.loja_backend.servico;
 import com.loja.sd.loja_backend.modelos.Papel;
 import com.loja.sd.loja_backend.modelos.UtilizadorLocal;
 import com.loja.sd.loja_backend.repositorio.UtilizadorLocalRepositorio;
-import com.loja.sd.loja_backend.view.modelos.Registro;
+import com.loja.sd.loja_backend.view.modelos.Registo;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,20 +24,20 @@ public class UtilizadorServico implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UtilizadorLocal registrar(Registro registro) {
-        if (utilizadorRepositorio.existsByUtilizador(registro.getUtilizador())) {
+    public UtilizadorLocal registrar(Registo registo) {
+        if (utilizadorRepositorio.existsByUtilizador(registo.getUtilizador())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Utilizador ja existe");
         }
-        if (utilizadorRepositorio.existsByEmail(registro.getEmail())) {
+        if (utilizadorRepositorio.existsByEmail(registo.getEmail())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email ja existe");
         }
 
         UtilizadorLocal utilizador = new UtilizadorLocal();
-        utilizador.setNome(registro.getNome());
-        utilizador.setEmail(registro.getEmail());
-        utilizador.setSobrenome(registro.getSobrenome());
-        utilizador.setPassword(passwordEncoder.encode(registro.getPassword()));
-        utilizador.setUtilizador(registro.getUtilizador());
+        utilizador.setNome(registo.getNome());
+        utilizador.setEmail(registo.getEmail());
+        utilizador.setSobrenome(registo.getSobrenome());
+        utilizador.setPassword(passwordEncoder.encode(registo.getPassword()));
+        utilizador.setUtilizador(registo.getUtilizador());
         utilizador.setPapel(Papel.CLIENTE);
 
         return utilizadorRepositorio.save(utilizador);

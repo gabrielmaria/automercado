@@ -1,6 +1,6 @@
 package com.loja.sd.loja_backend.view.modelos;
 
-public class Registro {
+public class Registo {
 
     private String utilizador;
     private String password;
